@@ -24,7 +24,9 @@ app.get("/incomeexpenses/all", async (req, res) => {
 
 app.get("/incomeexpenses", async (req, res) => {
     try {
-        const selectAll = await pool.query(`SELECT * FROM incomeexpenses WHERE date = '${[]}' '${[]}'`);
+        const { date } = req.params;
+        const selectAll = await pool.query(`SELECT * FROM incomeexpenses WHERE date = '${[date]}'`);
+        res.json(selectAll.rows);
     } catch (err) {
         console.error(err);
     }
@@ -33,7 +35,7 @@ app.get("/incomeexpenses", async (req, res) => {
 //insert Inisialisasi
 app.post("/incomeexpenses/incomeinit", async (req, res) => {
     try {
-        const incomeInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'Masuk','Pemasukan', 20000) RETURNING *`);
+        const incomeInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD','Pemasukan', 0) RETURNING *`);
         res.json(incomeInit.rows);
     } catch (err) {
         console.error(err);
@@ -42,12 +44,14 @@ app.post("/incomeexpenses/incomeinit", async (req, res) => {
 
 app.post("/incomeexpenses/expensesinit", async (req, res) => {
     try {
-        const expensesInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'Keluar','Pengeluaran', 17500) RETURNING *`);
+        const expensesInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD','Pengeluaran', 0) RETURNING *`);
         res.json(expensesInit.rows);
     } catch (err) {
         console.error(err);
     }
 });
+
+//insert 
 
 
 //listen
