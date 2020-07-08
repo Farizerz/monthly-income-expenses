@@ -14,4 +14,6 @@ CREATE VIEW sumPengeluaran AS SELECT date, SUM(jumlah) AS spengeluaran FROM inco
 
 CREATE VIEW sumPemasukanPengeluaran AS SELECT incomeexpenses.date, sumPemasukan.spemasukan AS pemasukan, sumPengeluaran.spengeluaran AS pengeluaran, incomeexpenses.deskripsi AS deskripsi FROM incomeexpenses JOIN sumPemasukan USING(date) JOIN sumPengeluaran USING(date);
 
-INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD', 'Pemasukan', 0.0);
+INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD', 'Pemasukan', 0);
+
+INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD', 'Pengeluaran', 0);

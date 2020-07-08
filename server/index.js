@@ -53,6 +53,7 @@ app.post("/incomeexpenses/expensesinit", async (req, res) => {
 
 //insert 
 
+//delete
 
 //listen
 app.listen(5000, () => {
