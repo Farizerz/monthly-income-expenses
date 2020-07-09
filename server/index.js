@@ -22,11 +22,11 @@ app.get("/incomeexpenses/all", async (req, res) => {
 
 //SELECT incomeexpenses
 
-app.get("/incomeexpenses", async (req, res) => {
+app.get("/incomeexpenses/initdata", async (req, res) => {
     try {
-        const { date } = req.params;
+        const { date } = req.body;
         const selectAll = await pool.query(`SELECT * FROM incomeexpenses WHERE date = '${[date]}'`);
-        res.json(selectAll.rows);
+        res.json(selectAll.rows[0]);
     } catch (err) {
         console.error(err);
     }
@@ -52,6 +52,15 @@ app.post("/incomeexpenses/expensesinit", async (req, res) => {
 });
 
 //insert 
+app.post("/incomeexpenses/insertdata", async (req, res) => {
+    try {
+        const { date, description, type, amount } = req.body;
+        const insertData = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('${[date]}', '${[description]}','${[type]}', ${[amount]}) RETURNING *`);
+        res.json(insertData.rows[0]);
+    } catch (err) {
+        console.error(err);
+    }
+});
 
 //delete
 
