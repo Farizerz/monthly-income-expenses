@@ -34,7 +34,7 @@ const ListData = () => {
                     </thead>
                     <tbody>
                         {data.map(datas => (
-                            <tr key = {datas.id}>
+                            <tr key = {datas.date}>
                                 <td className="px-4 py-2 text-center">{datas.date}</td>
                                 <td className="px-4 py-2 text-center">Rp. {datas.pemasukan}</td>
                                 <td className="px-4 py-2 text-center">Rp. {datas.pengeluaran}</td>

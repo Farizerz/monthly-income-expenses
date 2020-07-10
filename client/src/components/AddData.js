@@ -6,43 +6,29 @@ const AddData = () => {
     const [amount, setAmount] = useState(0);
     const [description, setDescription] = useState("");
 
-    const [data, setData] = useState(false);
-    let datas = false;
     //Check if the data on that month exists
-    const getData = async () => {
-        try {
-            const response = await fetch(`http://localhost:5000/incomeexpenses/${date}`);
-            const jsonData = await response.json();
-
-            setData(jsonData);
-            if(data !== "") {
-                datas = true;
-            } else {
-                datas = false;
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }
 
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
-            getData();
-            if(data === "") {
-                const body = { date, description, type, amount };
-                const response = await fetch("http://localhost:5000/incomeexpenses/insertdata", {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(body)
-                });
-    
-                window.location = "/";
+            const body = { date, description, type, amount };
+            const url = ["http://localhost:5000/incomeexpenses/incomeinit",
+                         "http://localhost:5000/incomeexpenses/expensesinit", 
+                         "http://localhost:5000/incomeexpenses/insertdata"
+                        ];
+            if(type === "Pick a type..." || type === "" ) {
+                alert("Pick a type!");
             } else {
-                alert("Kosong Bos!");            
+                
+                    Promise.all([
+                    url.map(urls => fetch(urls, {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify(body)
+                        })
+                    )
+               ]).then(window.location = "/");
             }
-
-
         } catch (err) {
             console.error(err);
         }
@@ -80,12 +66,11 @@ const AddData = () => {
                                             value={description} 
                                             onChange={e => setDescription(e.target.value)}
                                     />                                    
-                                    Type:<input  
-                                            type="text" 
-                                            className="form-control"
-                                            value={type} 
-                                            onChange={e => setType(e.target.value)} 
-                                    /> 
+                                    Type:<select id="type" className="form-control"  onChange={() => setType(document.getElementById("type").value)}>
+                                        <option value="Pick a type..." className="form-control">Pick a type...</option>
+                                        <option value="Pemasukan" className="form-control">Income</option>
+                                        <option value="Pengeluaran" className="form-control">Expenses</option>
+                                    </select>
                                     Amount:<input  
                                             type="number" 
                                             className="form-control"

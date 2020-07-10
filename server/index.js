@@ -22,9 +22,9 @@ app.get("/incomeexpenses/all", async (req, res) => {
 
 //SELECT incomeexpenses
 
-app.get("/incomeexpenses/initdata", async (req, res) => {
+app.get("/incomeexpenses/initdata/:date", async (req, res) => {
     try {
-        const { date } = req.body;
+        const { date } = req.params;
         const selectAll = await pool.query(`SELECT * FROM incomeexpenses WHERE date = '${[date]}'`);
         res.json(selectAll.rows[0]);
     } catch (err) {
@@ -35,7 +35,13 @@ app.get("/incomeexpenses/initdata", async (req, res) => {
 //insert Inisialisasi
 app.post("/incomeexpenses/incomeinit", async (req, res) => {
     try {
-        const incomeInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD','Pemasukan', 0) RETURNING *`);
+        const { date } = req.body;
+        const incomeInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) 
+                                             SELECT '${[date]}', 'ADD','Pemasukan', 0 
+                                             WHERE NOT EXISTS (SELECT date, deskripsi, tipe, jumlah FROM incomeexpenses 
+                                                               WHERE (date='${date}' AND deskripsi='ADD' AND tipe='Pemasukan')
+                                                              )
+                                            RETURNING *`);
         res.json(incomeInit.rows);
     } catch (err) {
         console.error(err);
@@ -44,7 +50,13 @@ app.post("/incomeexpenses/incomeinit", async (req, res) => {
 
 app.post("/incomeexpenses/expensesinit", async (req, res) => {
     try {
-        const expensesInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) VALUES('July 2020', 'ADD','Pengeluaran', 0) RETURNING *`);
+        const { date } = req.body;
+        const expensesInit = await pool.query(`INSERT INTO incomeexpenses (date, deskripsi, tipe, jumlah) 
+                                               SELECT '${[date]}', 'ADD','Pengeluaran', 0 
+                                               WHERE NOT EXISTS (SELECT date, deskripsi, tipe, jumlah FROM incomeexpenses 
+                                                                 WHERE (date='${date}' AND deskripsi='ADD' AND tipe='Pengeluaran')
+                                                                )
+                                              RETURNING *`);
         res.json(expensesInit.rows);
     } catch (err) {
         console.error(err);
