@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
+import DetailData from './DetailData';
+
 const ListData = () => {
     const [data, setData] = useState([]);
 
@@ -10,6 +12,18 @@ const ListData = () => {
             const jsonData = await response.json();
 
             setData(jsonData);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    //delete data
+    const deleteData = async (date) => {
+        try {
+            const deleteData = await fetch(`http://localhost:5000/incomeexpenses/delete/${date}`);
+            const jsonData = await deleteData.json();
+
+            setData(data.filter(data => data.date !== date));
         } catch (err) {
             console.error(err);
         }
@@ -30,6 +44,7 @@ const ListData = () => {
                             <th className="px-4 py-2 text-center">Expenses</th>
                             <th className="px-4 py-2 text-center">Total</th>
                             <th className="px-4 py-2 text-center"></th>
+                            <th className="px-4 py-2 text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,10 +55,13 @@ const ListData = () => {
                                 <td className="px-4 py-2 text-center">Rp. {datas.pengeluaran}</td>
                                 <td className="px-4 py-2 text-center">Rp. {datas.total}</td>
                                 <td className="px-4 py-2 text-center">
+                                    <DetailData datas = {datas} />
+                                </td>
+                                <td className="px-4 py-2 text-center">
                                     <button 
-                                            className="btn btn-info"
-                                            onClick={() => alert("AAA!")}                                 
-                                    >Details</button>
+                                        className="btn btn-danger" 
+                                        onClick={() => deleteData(datas.date)}
+                                    >Delete</button>
                                 </td>
                             </tr>
                         ))}

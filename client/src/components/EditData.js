@@ -1,72 +1,60 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState } from 'react';
 
-const AddData = () => {
-    const [date, setDate] = useState("");
-    const [type, setType] = useState("");
-    const [amount, setAmount] = useState(0);
-    const [description, setDescription] = useState("");
+const EditData = ({ data_ }) => {
+    const [type, setType] = useState(data_.tipe);
+    const [amount, setAmount] = useState(data_.jumlah);
+    const [description, setDescription] = useState(data_.deskripsi);
 
-    //Check if the data on that month exists
-
-    const onSubmitForm = async e => {
+    const updateData = async (e) => {
         e.preventDefault();
         try {
-            const body = { date, description, type, amount };
-            const url = ["http://localhost:5000/incomeexpenses/incomeinit",
-                         "http://localhost:5000/incomeexpenses/expensesinit", 
-                         "http://localhost:5000/incomeexpenses/insertdata"
-                        ];
+            const body = { description, type, amount };
             if(type === "Default" || type === "" ) {
                 alert("Pick a type!");
             } else {
+                const response = await fetch(`http://localhost:5000/incomeexpenses/editdata/${data_.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
                 
-                    Promise.all([
-                    url.map(urls => fetch(urls, {
-                            method: "POST",
-                            headers: {"Content-Type": "application/json"},
-                            body: JSON.stringify(body)
-                        })
-                    )
-               ]).then(window.location = "/");
+                alert("Updated!");
+                window.location = "/";
             }
         } catch (err) {
             console.error(err);
         }
-    };
+
+    }
 
     return (
         <Fragment>
             <button 
                 className="btn btn-success"
                 data-toggle="modal"
-                data-target="#myModal"                              
-            >Add Data</button>
+                data-target= {`#id${data_.id}`}                              
+            >Edit</button>
 
-            <div className="modal fade" id="myModal">
+            <div className="modal fade" id={`id${data_.id}`}>
                 <div className="modal-dialog">
                     <div className="modal-content">
 
                         <div className="modal-header">
-                            <h4 className="modal-title">Input New Data</h4>
+                            <h4 className="modal-title">Edit Data</h4>
                             <button type="button" className="close" data-dismiss="modal">&times;</button>
                         </div>
 
                         <div className="modal-body">
-                            <form onSubmit={onSubmitForm}>
                                 <div>
-                                    Date:<input  
-                                            type="text" 
-                                            className="form-control" 
-                                            value={date} 
-                                            onChange={e => setDate(e.target.value)}
-                                    />
                                     Description:<input  
                                             type="text" 
                                             className="form-control" 
                                             value={description} 
                                             onChange={e => setDescription(e.target.value)}
                                     />                                    
-                                    Type:<select id="type" className="form-control"  onChange={e => setType(document.getElementById("type").value)}>
+                                    Type:<select id="type" className="form-control" value={type} onChange={e => setType(e.target.value)}>
                                         <option value="Default" className="form-control">Pick a type...</option>
                                         <option value="Pemasukan" className="form-control">Income</option>
                                         <option value="Pengeluaran" className="form-control">Expenses</option>
@@ -79,9 +67,11 @@ const AddData = () => {
                                     />
                                 </div>
                                 <div className="py-3 d-flex justify-content-end">
-                                    <button type="submit" className="btn btn-success">Save</button>
+                                    <button 
+                                        className="btn btn-success"
+                                        onClick={e => updateData(e)}
+                                    >Save</button>
                                 </div>
-                            </form>
                         </div>
 
                         <div className="modal-footer">
@@ -95,4 +85,4 @@ const AddData = () => {
     )
 }
 
-export default AddData;
+export default EditData;

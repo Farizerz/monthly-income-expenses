@@ -22,11 +22,12 @@ app.get("/incomeexpenses/all", async (req, res) => {
 
 //SELECT incomeexpenses
 
-app.get("/incomeexpenses/initdata/:date", async (req, res) => {
+app.get("/incomeexpenses/:date", async (req, res) => {
     try {
         const { date } = req.params;
-        const selectAll = await pool.query(`SELECT * FROM incomeexpenses WHERE date = '${[date]}'`);
-        res.json(selectAll.rows[0]);
+        const selectAll = await pool.query(`SELECT * FROM incomeexpenses WHERE (date = '${[date]}' AND deskripsi != 'ADD')`);
+        res.json(selectAll.rows);
+        console.log(date);
     } catch (err) {
         console.error(err);
     }
@@ -74,7 +75,40 @@ app.post("/incomeexpenses/insertdata", async (req, res) => {
     }
 });
 
+//edit / update
+app.put("/incomeexpenses/editdata/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { description, type, amount } = req.body;
+        const insertData = await pool.query(`UPDATE incomeexpenses SET deskripsi ='${[description]}', tipe='${[type]}', jumlah='${[amount]}' WHERE id = '${[id]}'`);
+        res.json(id + " Updated!");
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 //delete
+app.delete("/incomeexpenses/delete/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteData = await pool.query(`DELETE FROM incomeexpenses WHERE id = ${[id]}`);
+        res.json(id + " Deleted!");
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+//delete all
+app.get("/incomeexpenses/delete/:date", async (req, res) => {
+    try {
+        const { date } = req.params;
+        const deleteAll = await pool.query(`DELETE FROM incomeexpenses WHERE date = '${[date]}'`);
+        res.json(date + " Deleted!");
+        //console.log(date + " From Delete Query");
+    } catch (err) {
+        console.error(err);
+    }
+});
 
 //listen
 app.listen(5000, () => {
