@@ -71,7 +71,9 @@ const DetailData = ({ datas }) => {
                                             {data.map(data_ => (
                                                 <tr key = {data_.id}>
                                                     <td className="px-4 py-2 text-center">{data_.deskripsi}</td>
+                                                    
                                                     <td className="px-4 py-2 text-center">Rp. {data_.jumlah}</td>
+
                                                     <td className="px-4 py-2 text-center">
                                                         <EditData data_ = {data_} />
                                                     </td>
