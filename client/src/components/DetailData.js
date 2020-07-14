@@ -93,6 +93,9 @@ const DetailData = ({ datas }) => {
                         </div>
 
                         <div className="modal-footer">
+                            <h1 className="form-control text-body d-flex justify-content-start">Income  : Rp. {datas.pemasukan}</h1>
+                            <h1 className="form-control text-body d-flex justify-content-start">Expenses : Rp. {datas.pengeluaran}</h1>
+                            <h1 className="form-control text-body d-flex justify-content-start">Total   : Rp. {datas.total}</h1>
                             <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={() => window.location = "/"}>Close</button>
                         </div>                        
 
