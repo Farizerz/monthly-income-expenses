@@ -55,7 +55,7 @@ const ListData = () => {
                                 <td className="px-4 py-2 text-center">Rp. {datas.pengeluaran}</td>
                                 <td className="px-4 py-2 text-center">Rp. {datas.total}</td>
                                 <td className="px-4 py-2 text-center">
-                                    <DetailData datas = {datas} />
+                                    <DetailData datas={datas} />
                                 </td>
                                 <td className="px-4 py-2 text-center">
                                     <button 
