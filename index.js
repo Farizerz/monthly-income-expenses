@@ -110,6 +110,10 @@ app.get("/incomeexpenses/delete/:date", async (req, res) => {
     }
 });
 
+app.get('/incomeexpense/coba', function (req, res) {
+    res.send('Hello dickhead!')
+  })
+
 //listen
 app.listen(5000, () => {
     console.log("PORT 5000 Started!");
