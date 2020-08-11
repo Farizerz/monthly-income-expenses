@@ -12,9 +12,9 @@ const AddData = () => {
         e.preventDefault();
         try {
             const body = { date, description, type, amount };
-            const url = ["http://localhost:5000/incomeexpenses/incomeinit",
-                         "http://localhost:5000/incomeexpenses/expensesinit", 
-                         "http://localhost:5000/incomeexpenses/insertdata"
+            const url = ["/incomeexpenses/incomeinit",
+                         "/incomeexpenses/expensesinit", 
+                         "/incomeexpenses/insertdata"
                         ];
             if(type === "Default" || type === "" ) {
                 alert("Pick a type!");
@@ -27,7 +27,7 @@ const AddData = () => {
                             body: JSON.stringify(body)
                         })
                     )
-               ]).then(window.location = "/");
+               ]).then(window.location="/");
             }
         } catch (err) {
             console.error(err);

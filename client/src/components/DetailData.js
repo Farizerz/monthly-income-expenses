@@ -14,7 +14,7 @@ const DetailData = ({ datas }) => {
     const getData = async () => {
         try {
 
-            const response = await fetch(`http://localhost:5000/incomeexpenses/${datas.date}`);
+            const response = await fetch(`/incomeexpenses/${datas.date}`);
             const jsonData = await response.json();
 
             setData(jsonData);
@@ -25,7 +25,7 @@ const DetailData = ({ datas }) => {
 
     const deleteData = async (id) => {
         try {
-            const deleteData = await fetch (`http://localhost:5000/incomeexpenses/delete/${id}`, {
+            const deleteData = await fetch (`/incomeexpenses/delete/${id}`, {
                 method: "DELETE"
             });
 

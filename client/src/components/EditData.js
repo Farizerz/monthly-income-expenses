@@ -12,7 +12,11 @@ const EditData = ({ data_ }) => {
             if(type === "Default" || type === "" ) {
                 alert("Pick a type!");
             } else {
-                const response = await fetch(`http://localhost:5000/incomeexpenses/editdata/${data_.id}`, {
+
+                //proxy
+
+                
+                const response = await fetch(`/incomeexpenses/editdata/${data_.id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json"

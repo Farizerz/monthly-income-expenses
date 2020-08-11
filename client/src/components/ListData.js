@@ -8,7 +8,7 @@ const ListData = () => {
     //select function
     const getData = async () => {
         try {
-            const response = await fetch("http://localhost:5000/incomeexpenses/all");
+            const response = await fetch("/incomeexpenses/all");
             const jsonData = await response.json();
 
             setData(jsonData);
@@ -20,7 +20,7 @@ const ListData = () => {
     //delete data
     const deleteData = async (date) => {
         try {
-            const deleteData = await fetch(`http://localhost:5000/incomeexpenses/delete/${date}`);
+            const deleteData = await fetch(`/incomeexpenses/delete/${date}`);
             const jsonData = await deleteData.json();
 
             setData(data.filter(data => data.date !== date));
